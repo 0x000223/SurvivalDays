@@ -1,47 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using DrawingFramework.Native;
-using SharpDX;
+﻿using SharpDX;
 using SharpDX.Direct2D1;
 using SharpDX.DirectWrite;
 using SharpDX.Mathematics.Interop;
 using SharpDX.Windows;
+using System.Drawing;
+using System.Windows.Forms;
+using DrawingFramework.Native;
+
 using Factory = SharpDX.Direct2D1.Factory;
 using FactoryType = SharpDX.DirectWrite.FactoryType;
-using Font = SharpDX.DirectWrite.Font;
 using FontFactory = SharpDX.DirectWrite.Factory;
 
 namespace DrawingFramework
 {
     public class Render
     {
-        private readonly int height;
+        private readonly int _height;
         
-        private readonly int width;
+        private readonly int _width;
 
-        private FontFactory fontFactory;
+        private FontFactory _fontFactory;
 
-        private TextFormat textFormat; 
+        private TextFormat _textFormat; 
 
-        private static WindowRenderTarget device;
+        private static WindowRenderTarget _device;
 
         public Render(int height, int width)
         {
-            this.height = height;
+            this._height = height;
 
-            this.width = width;
+            this._width = width;
 
             Window = GetWindow();
 
-            fontFactory = new FontFactory(FactoryType.Isolated);
+            _fontFactory = new FontFactory(FactoryType.Isolated);
 
-            textFormat = new TextFormat(fontFactory, "Arial", 12); // TODO : Change to collection of fonts 
+            _textFormat = new TextFormat(_fontFactory, "Arial", 12); // TODO : Change to collection of fonts 
 
             var renderProperties = new HwndRenderTargetProperties()
             {
@@ -55,7 +49,7 @@ namespace DrawingFramework
                 PixelFormat = new PixelFormat(SharpDX.DXGI.Format.B8G8R8A8_UNorm, AlphaMode.Premultiplied),
             };
 
-            device = new WindowRenderTarget(new Factory(), renderTargetProperties, renderProperties);
+            _device = new WindowRenderTarget(new Factory(), renderTargetProperties, renderProperties);
         }
 
         public Window Window { get; }
@@ -64,7 +58,7 @@ namespace DrawingFramework
         {
             var window = new Window()
             {
-                Size = new Size(width, height),
+                Size = new Size(_width, _height),
                 Location = Point.Empty,
                 FormBorderStyle = FormBorderStyle.None,
                 WindowState = FormWindowState.Maximized,
@@ -91,13 +85,13 @@ namespace DrawingFramework
         {
             RenderLoop.Run(Window, () =>
             {
-                device.BeginDraw();
-                device.Clear(null);
+                _device.BeginDraw();
+                _device.Clear(null);
 
                 cb.Invoke();
 
-                device.Flush();
-                device.EndDraw();
+                _device.Flush();
+                _device.EndDraw();
             });
         }
 
@@ -105,7 +99,7 @@ namespace DrawingFramework
         {
             var r = new RawRectangleF(x, y, x + 450f, y + 200f);
 
-            device.DrawText(text, textFormat, r, brush);
+            _device.DrawText(text, _textFormat, r, brush);
         }
 
         public void DrawLine(float x, float y, bool outline = false)
@@ -124,11 +118,11 @@ namespace DrawingFramework
 
         public class Brushes
         {
-            public static SolidColorBrush White = new SolidColorBrush(device, Colors.White);
-            public static SolidColorBrush Black = new SolidColorBrush(device, Colors.Black);
-            public static SolidColorBrush Red   = new SolidColorBrush(device, Colors.Red);
-            public static SolidColorBrush Green = new SolidColorBrush(device, Colors.Green);
-            public static SolidColorBrush Blue  = new SolidColorBrush(device, Colors.Blue);
+            public static SolidColorBrush White = new SolidColorBrush(_device, Colors.White);
+            public static SolidColorBrush Black = new SolidColorBrush(_device, Colors.Black);
+            public static SolidColorBrush Red   = new SolidColorBrush(_device, Colors.Red);
+            public static SolidColorBrush Green = new SolidColorBrush(_device, Colors.Green);
+            public static SolidColorBrush Blue  = new SolidColorBrush(_device, Colors.Blue);
         }
     }
 }
