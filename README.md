@@ -7,4 +7,6 @@ Demonstrates how to create transparent overlay window using [SharpDX](https://gi
 *Disclaimer:* MemoryFramework library has been excluded on purpose, as it exposes the communication between C# application and the kernel driver.
 
 ## Images
+![](/Images/Image1.jpg)
 
+![](/Images/Image2.jpg)
