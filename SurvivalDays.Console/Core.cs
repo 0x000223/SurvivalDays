@@ -1,13 +1,9 @@
-﻿using System;
+﻿using MemoryTool;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MemoryTool;
 
 namespace SurvivalDays.Console
 {
-    public class Core
+    public static class Core
     {
         public static List<Item> GetItems()
         {
